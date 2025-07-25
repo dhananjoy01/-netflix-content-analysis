@@ -200,7 +200,7 @@ LIMIT 5;
 
 **Objective:** Calculate and rank years by the average number of content releases by India.
 
-
+<img src="images/netflix_india.jpg"/>
 
 ### 11. List All Movies that are Documentaries
 
