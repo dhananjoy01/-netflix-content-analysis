@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/netflix_logo.jpg" alt="Zomato Analytics Dashboard";"/>
+</p>
+
 # Netflix Movies and TV Shows Data Analysis using SQL
 
 ## Overview
@@ -35,6 +39,8 @@ CREATE TABLE netflix(
 	description VARCHAR(255)
 );
 ```
+<img src="images/scema.jpg"/>
+
 
 ## Business Problems and Solutions
 
@@ -45,11 +51,11 @@ SELECT
 	type,
 	COUNT(*)
 FROM netflix
-GROUP BY 1;	
+GROUP BY 1;		
 ```
 
 **Objective:** Determine the distribution of content types on Netflix.
-
+<img src="images/netflix_movie.jpg"/>
 ### 2. Find the Most Common Rating for Movies and TV Shows
 
 ```sql
@@ -60,6 +66,7 @@ SELECT
 FROM netflix
 GROUP BY 1,2
 ORDER BY 3 DESC;
+
 ```
 
 **Objective:** Identify the most frequently occurring rating for each type of content.
@@ -67,11 +74,14 @@ ORDER BY 3 DESC;
 ### 3. List All Movies Released in a Specific Year (e.g., 2020)
 
 ```sql
+SELECT *
+FROM netflix
+
 SELECT 
 	*
 FROM 
 	netflix
-WHERE type=\'Movie\' AND release_year =\'2020\'
+WHERE type='Movie' AND release_year ='2020'
 ```
 
 **Objective:** Retrieve all movies released in a specific year.
@@ -95,10 +105,11 @@ LIMIT 5
 SELECT 
 	*
 FROM netflix
-WHERE type =\'Movie\'
+WHERE type ='Movie'
 	AND duration IS NOT NULL
-ORDER BY SPLIT_PART(duration,\' \',1)::INT DESC
+ORDER BY SPLIT_PART(duration,' ',1)::INT DESC
 LIMIT 1
+
 ```
 
 **Objective:** Find the movie with the longest duration.
@@ -124,7 +135,7 @@ SELECT
 FROM
 	netflix
 WHERE 
-	director= \'Rajiv Chilaka\'
+	director= 'Rajiv Chilaka'
 ```
 
 **Objective:** List all content directed by \'Rajiv Chilaka\'.
@@ -138,8 +149,8 @@ SELECT
 FROM 
 	netflix
 WHERE
-	type = \'TV Show\'
-	AND SPLIT_PART(duration,\' \',1)::INT >5;
+	type = 'TV Show'
+	AND SPLIT_PART(duration,' ',1)::INT >5;
 ```
 
 **Objective:** Identify TV shows with more than 5 seasons.
@@ -168,14 +179,27 @@ SELECT
 FROM
 	netflix
 WHERE
-	country=\'India\'
+	country='India'
+GROUP BY 1;
+
+```
+### return top 5 year with highest avg content release!
+```sql
+SELECT 
+	release_year AS years_of_release,
+	COUNT(*) AS toral_movie_release_in_india
+FROM
+	netflix
+WHERE
+	country='India'
 GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 5;
+
 ```
 
 **Objective:** Calculate and rank years by the average number of content releases by India.
-
+<img src="images/netflix_india.jpg"/>
 ### 11. List All Movies that are Documentaries
 
 ```sql
@@ -184,8 +208,8 @@ SELECT
 FROM 
 	netflix
 WHERE
-	type=\'Movie\'
-	AND listed_in = \'Documentaries\'
+	type='Movie'
+	AND listed_in = 'Documentaries'
 ```
 
 **Objective:** Retrieve all movies classified as documentaries.
@@ -208,7 +232,7 @@ SELECT
 FROM
 	netflix
 WHERE 
-	casts LIKE \'%Salman Khan%\'
+	casts LIKE '%Salman Khan%'
 	AND release_year::INT > EXTRACT(YEAR FROM CURRENT_DATE) - 20
 ```
 
@@ -218,7 +242,7 @@ WHERE
 
 ```sql
 SELECT
-	UNNEST(STRING_TO_ARRAY(casts,\',\')) AS actor,
+	UNNEST(STRING_TO_ARRAY(casts,',')) AS actor,
 	COUNT(*)
 FROM netflix
 GROUP BY 1
@@ -239,13 +263,14 @@ FROM(
 	SELECT
 		*,
 		CASE
-			WHEN description LIKE \'%kill%\' OR description LIKE \'%violence\' THEN \'Bad\'
-			ELSE \'Good\'
+			WHEN description LIKE '%kill%' OR description LIKE '%violence' THEN 'Bad'
+			ELSE 'Good'
 		END AS category
 	FROM 
 		netflix)
 GROUP BY 1,2
 ORDER BY 3 DESC
+
 ```
 
 **Objective:** Categorize content as \'Bad\' if it contains \'kill\' or \'violence\' and \'Good\' otherwise. Count the number of items in each category.
@@ -259,7 +284,24 @@ ORDER BY 3 DESC
 
 This analysis provides a comprehensive view of Netflix\'s content and can help inform content strategy and decision-making.
 
-## Author - Dhananjoy
+## 🧪 How to Use This Project
+
+1. **Clone the Repo**
+
+   ```bash
+   git clone https://github.com/dhananjoy01/netflix.sql.git
+   ```
+
+2. **Import the SQL File** Load `netflix.sql` into your PostgreSQL or compatible database.
+
+3. **Run the Queries** Use any SQL IDE (pgAdmin, DBeaver, MySQL Workbench, etc.) to execute and explore.
+
+4. **Customize Further** Enhance the project by adding joins, window functions, or visual dashboards.
+
+## 👨‍💻 Author & Contact
+
+**Dhanan Joy Chandro Roy**  
+Data Analyst | SQL Specialist | Business Intelligence Developer
 
 This project is part of my portfolio, showcasing the SQL skills essential for data analyst roles. If you have any questions, feedback, or would like to collaborate, feel free to get in touch!
 
